@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface HoroscopeApi {
     @POST(".")
     suspend fun getHoroscope(
-        @Query("sign") sign:String,
-        @Query("day") day:String
-    ):Response<HoroscopeResponse>
+        @Query("sign") sign: String,
+        @Query("day") day: String
+    ): Response<HoroscopeResponse>
 }

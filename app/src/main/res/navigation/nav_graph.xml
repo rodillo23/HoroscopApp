@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/compatibilityFragment"
-        android:name="com.example.horoscopapp.ui.compatibility.CompatibilityFragment"
+        android:name="com.example.horoscopapp.ui.lucky.LuckyFragment"
         android:label="fragment_compatibility"
-        tools:layout="@layout/fragment_compatibility"/>
+        tools:layout="@layout/fragment_lucky"/>
 
     <fragment
         android:id="@+id/informationFragment"
