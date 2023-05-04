@@ -19,6 +19,7 @@ import com.example.horoscopapp.R
 import com.example.horoscopapp.databinding.FragmentLuckyBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
+import javax.inject.Inject
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -28,13 +29,16 @@ class LuckyFragment : Fragment() {
     private var _binding: FragmentLuckyBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var randomCardsProvider: RandomCardsProvider
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //binding.tvLuckyInfo.animate().rotationY(50f).duration = 1500
         //binding.tvLuckyInfo.animate().rotation(360f).duration=1500
 
-       // val rotation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate)
+        // val rotation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate)
         //binding.tvLuckyInfo.startAnimation(rotation)
 
         binding.viewBackContainer.viewBack.setOnClickListener {
@@ -56,11 +60,13 @@ class LuckyFragment : Fragment() {
             binding.viewBackContainer.viewBack.cameraDistance = cameraDist
 
             //Recuperamos la animacion Flip Out
-            val flipOutAnimatorSet = AnimatorInflater.loadAnimator(requireContext(), R.animator.flip_out) as AnimatorSet
+            val flipOutAnimatorSet =
+                AnimatorInflater.loadAnimator(requireContext(), R.animator.flip_out) as AnimatorSet
             flipOutAnimatorSet.setTarget(binding.viewBackContainer.viewBack)
 
             //Recuperamos la animacion Flip In
-            val flipInAnimatorSet = AnimatorInflater.loadAnimator(requireContext(), R.animator.flip_in) as AnimatorSet
+            val flipInAnimatorSet =
+                AnimatorInflater.loadAnimator(requireContext(), R.animator.flip_in) as AnimatorSet
             flipInAnimatorSet.setTarget(binding.viewFrontContainer.viewFront)
 
             //Iniciamos animacion
@@ -72,24 +78,21 @@ class LuckyFragment : Fragment() {
                 binding.tvLuckyInfo.animate().alpha(1f).duration = 1000
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.i("Error", e.toString())
         }
     }
 
     private fun prepareCard() {
-        val image = when(Random.nextInt(0, 5)){
-            0 -> R.drawable.card_fool
-            1 -> R.drawable.card_moon
-            2 -> R.drawable.card_hermit
-            3 -> R.drawable.card_star
-            4 -> R.drawable.card_sun
-            5 -> R.drawable.card_sword
-            else -> R.drawable.card_reverse
-        }
+        val luck = randomCardsProvider.getLucky()
 
-        binding.viewFrontContainer.ivLuckyCard.setImageDrawable(ContextCompat.getDrawable(requireContext(), image
-        ))
+        binding.viewFrontContainer.ivLuckyCard.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(), luck.image
+            )
+        )
+
+        binding.tvLuckyInfo.text = getString(luck.text)
     }
 
     override fun onCreateView(
