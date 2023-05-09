@@ -92,7 +92,8 @@ class LuckyFragment : Fragment() {
             )
         )
 
-        binding.tvLuckyInfo.text = getString(luck.text)
+        binding.tvLuckyInfo.text = getString(luck.text
+        )
     }
 
     override fun onCreateView(
